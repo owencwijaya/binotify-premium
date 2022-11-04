@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: binotify-premium
+    image: binotify-premium:latest
+    build:
+      context: .
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 8001:8001
