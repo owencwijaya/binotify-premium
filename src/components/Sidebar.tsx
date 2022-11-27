@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Image, Link, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Icon, Image, Link, Text, useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import { FiHome, FiMusic, FiUserPlus } from 'react-icons/fi';
 import BinotifyLogo from '../assets/images/binotify.png';
 import { NavMenuItem } from '../interface/NavMenuItem';
@@ -10,12 +10,14 @@ const menuSidebar: NavMenuItem[] = [
 ];
 
 const Sidebar = () => {
+  const [isSmallScreen] = useMediaQuery('(max-width: 1000px)')
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box
         transition="3s ease"
         bg='black'
         // display={{ base: 'none', md: 'block' }}
+        display={isSmallScreen ? 'none' : 'block'}
         w={200}
         // w={{ base: '60', md: 200 }}
         h="100vh"

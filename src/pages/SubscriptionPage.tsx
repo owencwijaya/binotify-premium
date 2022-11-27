@@ -37,16 +37,16 @@ const SubscriptionPage = () => {
   }
 
   return (
-    <Flex direction="column" justifyContent="flex-start" alignItems="center" width="100vw" height="100vh" pt={5}>
+    <Flex mt={20} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100vh" pt={5}>
       <Heading color="green.700">Subscription Request</Heading>
-      <TableContainer width="80vw" mt={10}>
+      <TableContainer width="80%" mt={10}>
         <Table variant="unstyled">
           <Thead borderBottom="1px" >
             <Tr>
-              <Th width="1vw" fontSize="md">#</Th>
-              <Th width="44vw" fontSize="md">Username</Th>
-              <Th width="25vw" fontSize="md">Penyanyi</Th>
-              <Th width="10vw" fontSize="md" display="flex" justifyContent="center">Status</Th>
+              <Th width="1%" fontSize="md">#</Th>
+              <Th width="44%" fontSize="md">Username</Th>
+              <Th width="25%" fontSize="md">Penyanyi</Th>
+              <Th width="10%" fontSize="md" display="flex" justifyContent="center">Status</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -68,6 +68,7 @@ const SubscriptionPage = () => {
                         icon={<MdClose />}
                         bg="red.300"
                         mx={1}
+                        size="sm"
                         onClick={() => handleDelete(request.subscriber_id, request.creator_id)}
                       />
                       <IconButton
@@ -75,6 +76,7 @@ const SubscriptionPage = () => {
                         icon={<BsCheck2Circle />}
                         bg="green.300"
                         mx={1}
+                        size="sm"
                         onClick={() => handleEdit(request.subscriber_id, request.creator_id)}
                       />
                     </>
@@ -84,6 +86,7 @@ const SubscriptionPage = () => {
                     aria-label="Delete Song"
                     icon={<BsCheck2Circle />}
                     bg="green.300"
+                    size="sm"
                     disabled
                     _hover={{}}
                   />
@@ -93,6 +96,7 @@ const SubscriptionPage = () => {
                       aria-label="Delete Song"
                       icon={<MdClose />}
                       bg="red.300"
+                      size="sm"
                       disabled
                       _hover={{}}
                     />

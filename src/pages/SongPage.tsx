@@ -44,17 +44,17 @@ const SongPage = () => {
   }
 
   return (
-    <Flex direction="column" justifyContent="flex-start" alignItems="center" width="100vw" height="100vh" pt={5}>
+    <Flex mt={20} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100vh" pt={5}>
       <Heading color="green.700">Your Premium Songs</Heading>
-      <TableContainer width="80vw" mt={10}>
+      <TableContainer width="80%" mt={10}>
         <Table variant="unstyled">
           <Thead borderBottom="1px" >
             <Tr>
-              <Th width="1vw" fontSize="md">#</Th>
-              <Th width="44vw" fontSize="md">Judul</Th>
-              <Th width="15vw" fontSize="md">Album</Th>
-              <Th width="10vw" fontSize="md">Durasi</Th>
-              <Th width="10vw" fontSize="md"></Th>
+              <Th width="1%" fontSize="md">#</Th>
+              <Th width="44%" fontSize="md">Judul</Th>
+              <Th width="15%" fontSize="md">Album</Th>
+              <Th width="10%" fontSize="md">Durasi</Th>
+              <Th width="10%" fontSize="md"></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -75,12 +75,14 @@ const SongPage = () => {
                     aria-label="Delete Song"
                     icon={<FaRegTrashAlt />}
                     bg="red.300"
+                    size="sm"
                     onClick={() => handleDelete(song.song_id)}
                   />
                   <IconButton
                     aria-label="Edit Song"
                     icon={<MdEdit />}
                     bg="green.300"
+                    size="sm"
                     onClick={() => handleEdit(song.song_id)}
                   />
                 </Th>
