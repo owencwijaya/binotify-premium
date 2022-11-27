@@ -9,12 +9,12 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-    <Flex direction="row" justifyContent="center" width="100vw">
+    <Box bg="cyan.200" minH="100vh" minW="100vw">
       <Sidebar/>
-      <Box mt={40}>
+      <Flex alignItems="center" ml={200} justifyContent="center" bg="burlywood" w="full">
         <App />
-      </Box>
-    </Flex>
+      </Flex>
+    </Box>
     </BrowserRouter>
   </React.StrictMode>
 )
