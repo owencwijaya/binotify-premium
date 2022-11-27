@@ -2,6 +2,7 @@ import { Flex, Heading, IconButton, Table, TableContainer, Tbody, Th, Thead, Tr 
 import { FaRegTrashAlt } from "react-icons/fa"
 import { MdEdit } from "react-icons/md"
 import { Song } from "../interface/Song"
+import UploadModal from "../components/UploadModal"
 
 const Songs: Song[] = [
   {
@@ -45,6 +46,7 @@ const SongPage = () => {
 
   return (
     <Flex mt={20} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100vh" pt={5}>
+      <UploadModal/>
       <Heading color="green.700">Your Premium Songs</Heading>
       <TableContainer width="80%" mt={10}>
         <Table variant="unstyled">
