@@ -56,10 +56,11 @@ const UploadForm = (props: any) => {
 
         if (file){
             const storageRef = ref(storage, `/files/${file!.name}`);
-            const uploadTask = await uploadBytesResumable(storageRef, file);
+            const uploadTask = uploadBytesResumable(storageRef, file);
     
             setUploading(true);
-            uploadTask.on("state_changed", (snapshot: any) => {
+            uploadTask.on("state_changed", 
+            (snapshot) => {
                 const progressValue = Math.round(snapshot.bytesTransferred * 100 / snapshot.totalBytes) ;
                 setProgress(progressValue);
             },
@@ -69,10 +70,9 @@ const UploadForm = (props: any) => {
                     return;
                 },
                 () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
-                        setUploading(false);
-                        setUrl(downloadUrl);
-                    });
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL:string) => {
+                        console.log(downloadURL)
+                    })
                 }
             )
         }
