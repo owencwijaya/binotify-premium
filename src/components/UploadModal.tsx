@@ -47,7 +47,8 @@ const UploadForm = (props: any) => {
 
     const handleTitleChange = (event: any) => setTitle(event.target.value);
 
-    const sendSong = (event: SyntheticEvent) => {
+    const sendSong = async(event: SyntheticEvent) => {
+        let payload = {};
         if (!file && props.for === "upload") {
             alert("Please upload the song file!")
             return;
@@ -55,20 +56,20 @@ const UploadForm = (props: any) => {
 
         if (file){
             const storageRef = ref(storage, `/files/${file!.name}`);
-            const uploadTask = uploadBytesResumable(storageRef, file);
+            const uploadTask = await uploadBytesResumable(storageRef, file);
     
             setUploading(true);
-            uploadTask.on("state_changed", (snapshot) => {
+            uploadTask.on("state_changed", (snapshot: any) => {
                 const progressValue = Math.round(snapshot.bytesTransferred * 100 / snapshot.totalBytes) ;
                 setProgress(progressValue);
             },
     
-                (error) => {
+                (error: any) => {
                     console.log(error);
                     return;
                 },
                 () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
                         setUploading(false);
                         setUrl(downloadUrl);
                     });
@@ -80,7 +81,17 @@ const UploadForm = (props: any) => {
             alert("Please enter a title!");
             return;
         }
-
+        
+        if(url !== "") {
+            payload = {
+                judul: title,
+                audio_path: url
+            }
+        }else{
+            payload = {
+                judul: title,
+            }
+        }
 
         fetch(
             `http://localhost:3000/song${props.for !== "upload" ? `/${props.song_id}` : ""}`,
@@ -91,10 +102,7 @@ const UploadForm = (props: any) => {
                     'Content-Type': 'application/json',
                     'Authorization': `${sessionStorage.getItem("auth_token")}`
                 },
-                body: JSON.stringify({
-                    'judul': title,
-                    'audio_path': url
-                })
+                body: JSON.stringify(payload)
             }
         ).then((response) => {
             if(response.status === 200){
