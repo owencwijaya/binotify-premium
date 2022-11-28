@@ -68,9 +68,9 @@ const UploadForm = (props: any) => {
                     return;
                 },
                 () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
                         setUploading(false);
-                        setUrl(url)
+                        setUrl(downloadUrl);
                     });
                 }
             )
@@ -89,7 +89,7 @@ const UploadForm = (props: any) => {
                 // mode: 'cors', 
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer  ${sessionStorage.getItem("auth_token")}`
+                    'Authorization': `${sessionStorage.getItem("auth_token")}`
                 },
                 body: JSON.stringify({
                     'judul': title,

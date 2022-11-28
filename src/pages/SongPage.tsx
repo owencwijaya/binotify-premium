@@ -35,13 +35,25 @@ const SongPage = () => {
   }
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/user/${sessionStorage.getItem("user_id")}/songs`, {
+    axios.get(`http://localhost:3000/song`, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer  ${sessionStorage.getItem("auth_token")}`
+        'Authorization': `${sessionStorage.getItem("auth_token")}`
       }
     }).then((response) => {
       console.log(response)
+
+      var songList: Song[] = []
+
+      response.data.data.forEach((item: Song) => {
+        songList.push({
+          song_id: item.song_id,
+          judul: item.judul,
+          audio_path: item.audio_path
+        })
+      })
+
+      setSongs(songList);
     })
   }, [])
 
