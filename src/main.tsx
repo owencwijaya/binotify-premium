@@ -10,7 +10,7 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
-    <Box bg="cyan.200" minH="100vh" minW="100vw">
+    {/* <Box bg="cyan.200" minH="100vh" minW="100vw">
       <Sidebar/>
       <Flex
         direction="column"
@@ -20,10 +20,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         bg="burlywood"
         w="full"
       >
-        <Header />
+        <Header /> */}
         <App />
-      </Flex>
-    </Box>
+      {/* </Flex>
+    </Box> */}
     </BrowserRouter>
   </React.StrictMode>
 )
