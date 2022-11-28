@@ -17,18 +17,22 @@ import {
     Flex,
     Spacer,
     Progress,
-    Text
+    Text,
+    IconButton
 } from '@chakra-ui/react'
 
 import axios from 'axios';
 import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage'
 import { SyntheticEvent } from 'react';
 import { storage } from '../firebase';
-import { useState } from 'react'
+import { useState } from 'react';
+import { MdEdit } from "react-icons/md";
+import SongPage from '../pages/SongPage';
 
 const UploadForm = (props: any) => {
     const [title, setTitle] = useState<string>("");
     const [file, setFile] = useState<File>();
+    const [url, setUrl] = useState<string>("");
     const [progress, setProgress] = useState<number>(0);
     const [isUploading, setUploading] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
@@ -44,59 +48,60 @@ const UploadForm = (props: any) => {
     const handleTitleChange = (event: any) => setTitle(event.target.value);
 
     const sendSong = (event: SyntheticEvent) => {
-        console.log(file)
-        if (!file) {
+        if (!file && props.for === "upload") {
             alert("Please upload the song file!")
             return;
         }
 
-        const storageRef = ref(storage, `/files/${file.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, file);
-
-        setUploading(true);
-        uploadTask.on("state_changed", (snapshot) => {
-            const progressValue = Math.round(snapshot.bytesTransferred * 100 / snapshot.totalBytes) ;
-            setProgress(progressValue);
-        },
-
-        (error) => {
-            console.log(error);
-        },
-        () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                setUploading(false);
-                if (title === "") {
-                    alert("Please enter a title!");
+        if (file){
+            const storageRef = ref(storage, `/files/${file!.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+    
+            setUploading(true);
+            uploadTask.on("state_changed", (snapshot) => {
+                const progressValue = Math.round(snapshot.bytesTransferred * 100 / snapshot.totalBytes) ;
+                setProgress(progressValue);
+            },
+    
+                (error) => {
+                    console.log(error);
                     return;
+                },
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                        setUploading(false);
+                        setUrl(url)
+                    });
                 }
-
-                if (url === undefined) {
-                    alert("Please select a file to be uploaded!");
-                    return;
-                }
-                fetch(
-                    'http://localhost:3000/song',
-                    {
-                        method: 'POST',
-                        // mode: 'cors', 
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzgxYTliMTc3YzRlZWJiNjdkMWNjNDYiLCJpYXQiOjE2Njk1MzMwMTQsImV4cCI6MTY2OTUzNjYxNH0.kmfw0mc4fBgHNW6PbF7tnHWP5-3MkwicPaZSXhXXTac'
-                        },
-                        body: JSON.stringify({
-                            'judul': title,
-                            'audio_path': url
-                        })
-                    }
-                ).then((response) => {
-                    if(response.status === 200){
-                        setSuccess(true)
-                    }
-                })
-            });
+            )
         }
-        
-    )}
+
+        if (title === "") {
+            alert("Please enter a title!");
+            return;
+        }
+
+
+        fetch(
+            `http://localhost:3000/song${props.for !== "upload" ? `/${props.song_id}` : ""}`,
+            {
+                method: props.for === 'upload' ? 'POST' : 'PUT',
+                // mode: 'cors', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer  ${sessionStorage.getItem("auth_token")}`
+                },
+                body: JSON.stringify({
+                    'judul': title,
+                    'audio_path': url
+                })
+            }
+        ).then((response) => {
+            if(response.status === 200){
+                setSuccess(true)
+            }
+        })
+    }
 
     return(
         <>
@@ -111,7 +116,7 @@ const UploadForm = (props: any) => {
                 <Text hidden={!success}>Song successfully uploaded!</Text>
                 <Spacer/>
                 <Button colorScheme='green' mr={3} onClick={sendSong} alignSelf='right' disabled={isUploading} >
-                    Add Song
+                    {props.for === 'upload' ? 'Add Song' : 'Update Song'}
                 </Button>
             </Flex>
 
@@ -124,15 +129,23 @@ const UploadModal = (props: any) => {
     const [ isUploading, setUploading ] = useState(false);
     return (
         <>
-          <Button onClick={onOpen}>Add Song</Button>
+          {props.for === "upload" ? <Button onClick={onOpen}>Add Song</Button> :
+            <IconButton
+                aria-label="Edit Song"
+                icon={<MdEdit />}
+                bg="green.300"
+                size="sm"
+                onClick={onOpen}
+                />
+          } 
     
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Add a New Song</ModalHeader>
+              <ModalHeader>{props.for === "upload" ? "Add a New" : "Edit"} Song</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <UploadForm/>
+                <UploadForm for = {props.for} song = {props.song_id} />
               </ModalBody>
     
               <ModalFooter>

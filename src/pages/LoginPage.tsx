@@ -36,10 +36,12 @@ const LoginPage = () => {
         if (response.status === 200) {
           const api_key = response.data.data["api_key"];
           const auth_token = response.data.data["auth_token"];
-          const is_admin = response.data.data["is_admin"];
+          const is_admin = response.data.data.user[0]["admin"];
+          const user_id = response.data.data.user[0]["_id"];
 
           sessionStorage.setItem("auth_token", "Bearer " + auth_token);
           sessionStorage.setItem("api_key", api_key);
+          sessionStorage.setItem("user_id", user_id);
 
           if (is_admin){
             window.location.href = "/subscription";
