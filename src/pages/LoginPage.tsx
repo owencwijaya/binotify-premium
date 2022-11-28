@@ -17,15 +17,15 @@ const LoginPage = () => {
     if (username === "") {
       setError(true)
       setErrorMessage("Please insert your username!");
+      return;
     }
 
     if (password === ""){
       setError(true)
       setErrorMessage("Please insert your password!");
+      return;
     }
 
-    setError(false)
-    setErrorMessage("");
 
     axios.post('http://localhost:3000/auth/login', {
       username: username,
@@ -52,10 +52,14 @@ const LoginPage = () => {
         console.log(error);
         setError(true);
         setErrorMessage(error);
+        return;
       }
     )
     setUsername("")
     setPassword("")
+
+    setError(false)
+    setErrorMessage("");
   }
   
     
@@ -95,8 +99,8 @@ const LoginPage = () => {
             />
           </FormControl>
           <Button color="green.700" mt={3} onClick={handleLogin}>Log In</Button>
-          <Link href = '/register'>
-            Don't have an account yet?
+          <Link href = '/register' color = "green.600">
+            Don't have an account yet? Sign Up
           </Link>
         </Flex>
       </Flex>
