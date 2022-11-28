@@ -32,7 +32,13 @@ const LoginPage = () => {
       password: password
     }).then(
       (response) => {
-        console.log(response);
+        console.log(response)
+        if(response.status!==200){
+          console.log("gagal")
+          setError(true)
+          setErrorMessage(response.data.message);
+          
+        }
         if (response.status === 200) {
           const api_key = response.data.data["api_key"];
           const auth_token = response.data.data["auth_token"];
@@ -49,6 +55,11 @@ const LoginPage = () => {
             window.location.href = "/song";
           }
         }
+        console.log("salah")
+        if(response.status !== 200){
+          setError(true)
+          setErrorMessage("Wrong username or password!");
+        }
       },
       (error) => {
         console.log(error);
@@ -56,7 +67,9 @@ const LoginPage = () => {
         setErrorMessage(error);
         return;
       }
-    )
+    ).catch((err)=>{
+      console.log(err.response)
+    })
     setUsername("")
     setPassword("")
 
