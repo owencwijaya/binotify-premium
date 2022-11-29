@@ -53,8 +53,7 @@ const UploadForm = (props: any) => {
             alert("Please upload the song file!")
             return;
         }
-        console.log(props.for)
-        console.log(props.song_id)
+
         if (file){
             const storageRef = ref(storage, `/files/${file!.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -124,7 +123,7 @@ const UploadForm = (props: any) => {
             </FormControl>
             <Progress colorScheme='green' size='md'  mt = {5} value = {progress}/>
             <Flex dir = "row" mt = {5}>
-                <Text hidden={!success}>Song successfully uploaded!</Text>
+                <Text hidden={!success}>Song successfully ${props.for === 'upload' ? 'uploaded' : 'edited'}!</Text>
                 <Spacer/>
                 <Button colorScheme='green' mr={3} onClick={sendSong} alignSelf='right' disabled={isUploading} >
                     {props.for === 'upload' ? 'Add Song' : 'Update Song'}

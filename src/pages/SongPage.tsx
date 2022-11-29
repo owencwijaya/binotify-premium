@@ -1,10 +1,10 @@
 import { Flex, Heading, IconButton, Table, TableContainer, Tbody, Th, Thead, Tr, Center, Text } from "@chakra-ui/react"
-import { FaRegTrashAlt } from "react-icons/fa"
 import { MdEdit } from "react-icons/md"
 import { Song } from "../interface/Song"
 import UploadModal from "../components/UploadModal"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import DeleteModal from "../components/DeleteModal"
 
 const SongPage = () => {
 
@@ -73,14 +73,8 @@ const SongPage = () => {
                   <Th>{i+1}</Th>
                   <Th>{song.judul}</Th>
                   <Th display="flex" justifyContent="space-between">
-                    <IconButton
-                      aria-label="Delete Song"
-                      icon={<FaRegTrashAlt />}
-                      bg="red.300"
-                      size="sm"
-                      onClick={() => handleDelete(song._id)}
-                    />
                     <UploadModal for = "edit" song_id = {song._id}/>
+                    <DeleteModal song_id = {song._id} title = {song.judul} />
                   </Th>
                 </Tr>
               ))}
