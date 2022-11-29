@@ -33,17 +33,12 @@ const LoginPage = () => {
     }).then(
       (response) => {
         console.log(response)
-        if(response.status!==200){
-          console.log("gagal")
-          setError(true)
-          setErrorMessage(response.data.message);
-          
-        }
         if (response.status === 200) {
+          console.log(response.data)
           const api_key = response.data.data["api_key"];
           const auth_token = response.data.data["auth_token"];
-          const is_admin = response.data.data.user[0]["admin"];
-          const user_id = response.data.data.user[0]["_id"];
+          const is_admin = response.data.data.user["admin"];
+          const user_id = response.data.data.user["_id"];
 
           sessionStorage.setItem("auth_token", "Bearer " + auth_token);
           sessionStorage.setItem("api_key", api_key);
@@ -57,6 +52,7 @@ const LoginPage = () => {
         }
         console.log("salah")
         if(response.status !== 200){
+          console.log(response)
           setError(true)
           setErrorMessage("Wrong username or password!");
         }
@@ -68,7 +64,10 @@ const LoginPage = () => {
         return;
       }
     ).catch((err)=>{
-      console.log(err.response)
+      console.log(err)
+      setError(true)
+      setErrorMessage(err);
+      return;
     })
     setUsername("")
     setPassword("")
