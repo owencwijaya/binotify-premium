@@ -6,18 +6,6 @@ import UploadModal from "../components/UploadModal"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-const Songs: Song[] = [
-  {
-    song_id:"1",
-    judul: "Diri",
-    audio_path: "https://www.youtube.com/watch?v=fsGcUWiylW8",
-  }, {
-    song_id: "2",
-    judul: "Diri",
-    audio_path: "https://www.youtube.com/watch?v=fsGcUWiylW8",
-  }
-]
-
 const SongPage = () => {
 
   const [songs, setSongs] = useState<Song[]>([])
@@ -44,16 +32,17 @@ const SongPage = () => {
       console.log(response)
 
       var songList: Song[] = []
-
       response.data.data.forEach((item: Song) => {
         songList.push({
-          song_id: item.song_id,
+          _id: item._id,
           judul: item.judul,
           audio_path: item.audio_path
         })
+        // console.log(songs)
       })
 
       setSongs(songList);
+      console.log(songs)
     })
   }, [])
 
@@ -75,11 +64,11 @@ const SongPage = () => {
             <Tbody>
               {songs.map((song, i) => (
                 <Tr 
-                  key={song.song_id}
+                  key={song._id}
                   _hover={{
                     background: "teal.100"
                   }}
-                  onClick={() => handleClick(song.song_id)}
+                  onClick={() => handleClick(song._id)}
                 >
                   <Th>{i+1}</Th>
                   <Th>{song.judul}</Th>
@@ -89,9 +78,9 @@ const SongPage = () => {
                       icon={<FaRegTrashAlt />}
                       bg="red.300"
                       size="sm"
-                      onClick={() => handleDelete(song.song_id)}
+                      onClick={() => handleDelete(song._id)}
                     />
-                    <UploadModal for = "edit" song_id = {song.song_id}/>
+                    <UploadModal for = "edit" song_id = {song._id}/>
                   </Th>
                 </Tr>
               ))}

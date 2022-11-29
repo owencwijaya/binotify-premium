@@ -8,7 +8,7 @@ import Sidebar from './components/Sidebar'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
     {/* <Box bg="cyan.200" minH="100vh" minW="100vw">
       <Sidebar/>
@@ -25,5 +25,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       {/* </Flex>
     </Box> */}
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
 )

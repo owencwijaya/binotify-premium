@@ -53,7 +53,8 @@ const UploadForm = (props: any) => {
             alert("Please upload the song file!")
             return;
         }
-
+        console.log(props.for)
+        console.log(props.song_id)
         if (file){
             const storageRef = ref(storage, `/files/${file!.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -70,45 +71,47 @@ const UploadForm = (props: any) => {
                     return;
                 },
                 () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL:string) => {
-                        console.log(downloadURL)
-                    })
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
+                        setUploading(false);
+                        axios.put(
+                            `http://localhost:3000/song${props.for !== "upload" ? `/${props.song_id}` : ""}`,{
+                                judul: title,
+                                audio_path: downloadUrl,
+                            },
+                            {
+                                // mode: 'cors', 
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `${sessionStorage.getItem("auth_token")}`
+                                },
+                            }
+                        ).then((response) => {
+                            if(response.status === 200){
+                                setSuccess(true)
+                            }
+                        })
+                    });
                 }
             )
-        }
-
-        if (title === "") {
-            alert("Please enter a title!");
-            return;
-        }
-        
-        if(url !== "") {
-            payload = {
-                judul: title,
-                audio_path: url
-            }
-        }else{
-            payload = {
-                judul: title,
-            }
-        }
-
-        fetch(
-            `http://localhost:3000/song${props.for !== "upload" ? `/${props.song_id}` : ""}`,
-            {
-                method: props.for === 'upload' ? 'POST' : 'PUT',
-                // mode: 'cors', 
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `${sessionStorage.getItem("auth_token")}`
+        } else {
+            axios.put(
+                `http://localhost:3000/song${props.for === "edit" ? `/${props.song_id}` : ""}`,{
+                    judul: title,
+                    audio_path: "",
                 },
-                body: JSON.stringify(payload)
-            }
-        ).then((response) => {
-            if(response.status === 200){
-                setSuccess(true)
-            }
-        })
+                {
+                    // mode: 'cors', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${sessionStorage.getItem("auth_token")}`
+                    },
+                }
+            ).then((response) => {
+                if(response.status === 200){
+                    setSuccess(true)
+                }
+            })
+        }
     }
 
     return(
@@ -153,7 +156,7 @@ const UploadModal = (props: any) => {
               <ModalHeader>{props.for === "upload" ? "Add a New" : "Edit"} Song</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <UploadForm for = {props.for} song = {props.song_id} />
+                <UploadForm for = {props.for} song_id = {props.song_id} onClick = {console.log(props.song_id, props.for)}/>
               </ModalBody>
     
               <ModalFooter>
