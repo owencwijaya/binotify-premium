@@ -72,23 +72,47 @@ const UploadForm = (props: any) => {
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl: string) => {
                         setUploading(false);
-                        axios.put(
-                            `http://localhost:3000/song${props.for !== "upload" ? `/${props.song_id}` : ""}`,{
+
+                        axios({
+                            method: props.for === "upload" ? 'post' : 'put',
+                            url: `http://localhost:3000/song${props.for !== "upload" ? `/${props.song_id}` : ""}`,
+                            data: {
                                 judul: title,
                                 audio_path: downloadUrl,
                             },
-                            {
-                                // mode: 'cors', 
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Authorization': `${sessionStorage.getItem("auth_token")}`
-                                },
-                            }
-                        ).then((response) => {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `${sessionStorage.getItem("auth_token")}`
+                            },
+  
+                          }).then((response) => {
                             if(response.status === 200){
                                 setSuccess(true)
+                                setTimeout(() => {
+                                    window.location.href = '/song'
+                                }, 500);
                             }
-                        })
+                        });
+                        // axios.{props.for === "upload" ? post : put}(
+                        //     `http://localhost:3000/song${props.for !== "upload" ? `/${props.song_id}` : ""}`,{
+                        //         judul: title,
+                        //         audio_path: downloadUrl,
+                        //     },
+                        //     {
+                        //         // mode: 'cors', 
+                        //         headers: {
+                        //             'Content-Type': 'application/json',
+                        //             'Authorization': `${sessionStorage.getItem("auth_token")}`
+                        //         },
+                        //     }
+                        // ).then((response) => {
+                        //     if(response.status === 200){
+                        //         setSuccess(true)
+                        //         setTimeout(() => {
+                        //             window.location.href = '/song'
+                        //         }, 500);
+                        //     }
+                        // })
                     });
                 }
             )
@@ -108,6 +132,10 @@ const UploadForm = (props: any) => {
             ).then((response) => {
                 if(response.status === 200){
                     setSuccess(true)
+                    setTimeout(() => {
+                        window.location.href = '/song'
+                    }, 500);
+
                 }
             })
         }
@@ -123,7 +151,7 @@ const UploadForm = (props: any) => {
             </FormControl>
             <Progress colorScheme='green' size='md'  mt = {5} value = {progress}/>
             <Flex dir = "row" mt = {5}>
-                <Text hidden={!success}>Song successfully ${props.for === 'upload' ? 'uploaded' : 'edited'}!</Text>
+                <Text hidden={!success}>Song successfully {props.for === 'upload' ? 'uploaded' : 'edited'}!</Text>
                 <Spacer/>
                 <Button colorScheme='green' mr={3} onClick={sendSong} alignSelf='right' disabled={isUploading} >
                     {props.for === 'upload' ? 'Add Song' : 'Update Song'}

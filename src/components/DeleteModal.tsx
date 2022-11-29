@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 
 import { FaRegTrashAlt } from "react-icons/fa"
-import { useState } from "react";
 import axios from "axios";
 
 
@@ -35,7 +34,6 @@ const DeleteModal = (props: any) => {
             alert(response.data.message)
         }
         window.location.href = '/song'
-        onClose;
     })
   }
 
