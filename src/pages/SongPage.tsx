@@ -9,10 +9,11 @@ import { Song, SongRow } from "../interface/Song"
 
 const SongPage = () => {
   const url = 'http://localhost:3000'
-  const limit = 3
+  const limit = 10
   const [songs, setSongs] = useState<Song[]>([])
   const [page, setPage] = useState<number>(1)
   const [totalPage, setTotalPage] = useState<number>(1)
+  
   const getSongs = (page: number) => {
     console.log("Get page song", page)
     console.log(sessionStorage.getItem("auth_token"))
