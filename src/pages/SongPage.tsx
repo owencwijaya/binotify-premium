@@ -99,5 +99,6 @@ const SongPage = () => {
     </Center>
   )
 }
+}
 
-export default SongPage
+export default SongPage;
