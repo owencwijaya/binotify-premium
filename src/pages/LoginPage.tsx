@@ -41,6 +41,7 @@ const LoginPage = () => {
 
           sessionStorage.setItem("auth_token", "Bearer " + auth_token);
           sessionStorage.setItem("user_id", "6384c00c17c1599370398db7");
+          sessionStorage.setItem("is_admin", is_admin);
 
           if (is_admin){
             window.location.href = "/subscription";

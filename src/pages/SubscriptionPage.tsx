@@ -5,34 +5,13 @@ import { BiLogOut } from "react-icons/bi"
 import { BsCheck2Circle } from "react-icons/bs"
 import { MdClose } from "react-icons/md"
 import { Status } from "../interface/Status"
-import { SubscriptionRequest } from "../interface/SubscriptionRequest"
+import { Subscription } from "../interface/Subscription"
 
 
-const requestList: SubscriptionRequest[] = [
-  {
-    subscriber_id: 1,
-    username: "user1",
-    creator_id: 1,
-    penyanyi: "Denny Caknan",
-    status: Status.PENDING
-  },   {
-    subscriber_id: 2,
-    username: "user2",
-    creator_id: 1,
-    penyanyi: "Guyon Waton",
-    status: Status.ACCEPTED
-  },   {
-    subscriber_id: 3,
-    username: "user3",
-    creator_id: 2,
-    penyanyi: "NIKI",
-    status: Status.REJECTED
-  }
-]
 
 const SubscriptionPage = () => {
   const url = 'http://localhost:3000'
-  const [requests, setRequests] = useState<SubscriptionRequest[]>([]);
+  const [subs, setSubs] = useState<Subscription[]>([]);
   const toast = useToast();
 
   useEffect(() => {
@@ -43,22 +22,21 @@ const SubscriptionPage = () => {
       }
     }).then((response)=>{
       console.log(response)
-      let subscriptionRequests: SubscriptionRequest [] = [];
+      let subscriptions: Subscription [] = [];
 
-      response.data.data.map((inter: SubscriptionRequest)=>{
-        subscriptionRequests.push({
-          subscriber_id: inter.subscriber_id,
-          username: inter.username,
-          creator_id: inter.creator_id,
-          penyanyi: inter.penyanyi,
-          status: inter.status
+      response.data.data.forEach((item: Subscription) => {
+
+        subscriptions.push({
+          creator_id: item.creator_id,
+          subscriber_id: item.subscriber_id,
+          status: item.status
         })
       })
-      setRequests(subscriptionRequests)
+      setSubs(subscriptions)
     })
-  })
+  }, [])
 
-  const handleDecline = (subscriber_id: number | null, creator_id: number | null) => {
+  const handleDecline = (subscriber_id: number | null, creator_id: string | null) => {
     console.log("delete request from", subscriber_id, "to", creator_id)
     axios.put(`${url}/subs/`, {
       headers: {
@@ -87,7 +65,7 @@ const SubscriptionPage = () => {
     })
   }
 
-  const handleAccept = (subscriber_id: number | null, creator_id: number | null) => {
+  const handleAccept = (subscriber_id: number | null, creator_id: string | null) => {
     console.log("edit request from", subscriber_id, "to", creator_id)
     axios.put(`${url}/subs/`, {
       headers: {
@@ -142,7 +120,7 @@ const SubscriptionPage = () => {
     <Center w="100vw">
     <Flex mt={20} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100vh" pt={5}>
       <Heading color="green.700">Subscription Request</Heading>
-      {requests.length > 0 ? (
+      {subs.length > 0 ? (
       <TableContainer width="80%" mt={10}>
         <Table variant="unstyled">
           <Thead borderBottom="1px" >
@@ -154,7 +132,7 @@ const SubscriptionPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {requests.map((request, i) => (
+            {subs.map((request, i) => (
               <Tr 
                 key={i}
                 _hover={{
@@ -162,8 +140,8 @@ const SubscriptionPage = () => {
                 }}
               >
                 <Th>{i+1}</Th>
-                <Th>{request.username}</Th>
-                <Th>{request.penyanyi}</Th>
+                <Th>{request.subscriber_id}</Th>
+                <Th>{request.creator_id}</Th>
                 <Th display="flex" justifyContent="center">
                   {request.status === Status.PENDING && (
                     <>

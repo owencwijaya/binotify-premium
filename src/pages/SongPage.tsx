@@ -3,6 +3,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { BiLogOut } from "react-icons/bi"
 import { GrFormNext, GrFormPrevious } from "react-icons/gr"
+import { Navigate } from "react-router-dom"
 import UploadModal from "../components/UploadModal"
 import { Song, SongRow } from "../interface/Song"
 
@@ -58,6 +59,12 @@ const SongPage = () => {
   useEffect(() => {
     getSongs(1)
   }, [])
+
+  const is_admin = sessionStorage.getItem("is_admin") === "true"
+
+  if (is_admin){
+    return <Navigate to = "/subscription" replace />
+  }
 
   return (
     <Box minHeight="100vh">
