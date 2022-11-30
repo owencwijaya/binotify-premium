@@ -9,6 +9,7 @@ const SongPage = () => {
   const [songs, setSongs] = useState<Song[]>([])
 
   useEffect(() => {
+    console.log(sessionStorage.getItem("auth_token"))
     axios.get(`http://localhost:3000/song`, {
       headers: {
         'Content-Type': 'application/json',

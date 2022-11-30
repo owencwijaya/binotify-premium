@@ -26,7 +26,7 @@ const LoginPage = () => {
       return;
     }
 
-
+    console.log("tesss")
     axios.post('http://localhost:3000/auth/login', {
       username: username,
       password: password
@@ -35,14 +35,12 @@ const LoginPage = () => {
         console.log(response)
         if (response.status === 200) {
           console.log(response.data)
-          const api_key = response.data.data["api_key"];
-          const auth_token = response.data.data["auth_token"];
-          const is_admin = response.data.data.user["admin"];
-          const user_id = response.data.data.user["_id"];
+          let auth_token = response.data.data["authToken"];
+          let is_admin = response.data.data["user"]["admin"];
+          let user_id = response.data.data["user"]["_id"];
 
           sessionStorage.setItem("auth_token", "Bearer " + auth_token);
-          sessionStorage.setItem("api_key", api_key);
-          sessionStorage.setItem("user_id", user_id);
+          sessionStorage.setItem("user_id", "6384c00c17c1599370398db7");
 
           if (is_admin){
             window.location.href = "/subscription";
@@ -61,14 +59,8 @@ const LoginPage = () => {
         console.log(error);
         setError(true);
         setErrorMessage(error);
-        return;
       }
-    ).catch((err)=>{
-      console.log(err)
-      setError(true)
-      setErrorMessage(err);
-      return;
-    })
+    )
     setUsername("")
     setPassword("")
 

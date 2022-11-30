@@ -3,6 +3,9 @@ import { BsCheck2Circle } from "react-icons/bs"
 import { MdClose } from "react-icons/md"
 import { Status } from "../interface/Status"
 import { SubscriptionRequest } from "../interface/SubscriptionRequest"
+import axios from "axios";
+import { useEffect, useState } from "react"
+
 
 const requestList: SubscriptionRequest[] = [
   {
@@ -27,6 +30,30 @@ const requestList: SubscriptionRequest[] = [
 ]
 
 const SubscriptionPage = () => {
+  const url = 'http://localhost:3000'
+  const [requests, setRequests] = useState<SubscriptionRequest[]>([]);
+
+  useEffect(() => { 
+    axios.get(`${url}/subscription`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${sessionStorage.getItem("auth_token")}`
+      }
+    }).then((response)=>{
+      console.log(response)
+      let subscriptionRequests: SubscriptionRequest [] = [];
+
+      response.data.data.map((inter: SubscriptionRequest)=>{
+        subscriptionRequests.push({
+          subscriber_id: inter.subscriber_id,
+          username: inter.username,
+          creator_id: inter.creator_id,
+          penyanyi: inter.penyanyi,
+          status: inter.status
+        })
+      })
+    })
+  })
 
   const handleDelete = (subscriber_id: number | null, creator_id: number | null) => {
     console.log("delete request from", subscriber_id, "to", creator_id)
@@ -34,6 +61,14 @@ const SubscriptionPage = () => {
 
   const handleEdit = (subscriber_id: number | null, creator_id: number | null) => {
     console.log("edit request from", subscriber_id, "to", creator_id)
+    axios.put(`${url}/subs/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${sessionStorage.getItem("auth_token")}`
+      }
+    }).then((response)=>{
+
+    })
   }
 
   return (
@@ -50,7 +85,7 @@ const SubscriptionPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {requestList.map((request, i) => (
+            {requests.length > 0 ? requests.map((request, i) => (
               <Tr 
                 key={i}
                 _hover={{
@@ -103,7 +138,7 @@ const SubscriptionPage = () => {
                   )}
                 </Th>
               </Tr>
-            ))}
+            )) : <Heading size = 'md' mt = {10}>You don't have any requests yet!</Heading> }
           </Tbody>
         </Table>
       </TableContainer>
