@@ -1,6 +1,7 @@
 import { Box, Button, Center, Flex, Heading, Stack, Table, TableContainer, Tbody, Text, Th, Thead, Tr } from "@chakra-ui/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { BiLogOut } from "react-icons/bi"
 import { GrFormNext, GrFormPrevious } from "react-icons/gr"
 import UploadModal from "../components/UploadModal"
 import { Song, SongRow } from "../interface/Song"
@@ -39,13 +40,29 @@ const SongPage = () => {
   })
   }
 
+  const handleLogout = () => {
+    sessionStorage.clear()
+    window.location.href = "/login"
+  }
+
   useEffect(() => {
     getSongs(1)
   }, [])
 
   return (
+    <Box minHeight="100vh">
+    <Flex justifyContent="flex-start" mt={5} ml={5}>
+      <Button
+        leftIcon={<BiLogOut/>}
+        variant="solid"
+        colorScheme="red"
+        onClick={handleLogout}
+      >
+        Logout
+      </Button>
+    </Flex>
     <Center w = "100vw">
-      <Flex mt={20} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100vh" pt={5}>
+      <Flex mt={10} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100%">
         <Heading color="green.700" mb={5}>Your Premium Songs</Heading>
         <UploadModal for = "upload"/>
         {songs.length !== 0 ?
@@ -101,6 +118,7 @@ const SongPage = () => {
         : <Heading size = 'md' mt = {10}>You don't have any songs yet!</Heading>}
       </Flex>
     </Center>
+    </Box>
   )
 }
 
