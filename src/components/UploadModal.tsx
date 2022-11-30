@@ -1,33 +1,14 @@
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    Button,
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    FormHelperText,
-    Input,
-    Heading,
-    useDisclosure,
-    Flex,
-    Spacer,
-    Progress,
-    Text,
-    IconButton
-} from '@chakra-ui/react'
+    Button, Flex, FormControl,
+    FormLabel, IconButton, Input, Modal, ModalBody,
+    ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Progress, Spacer, Text, useDisclosure
+} from '@chakra-ui/react';
 
+import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage';
 import axios from 'axios';
-import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage'
-import { SyntheticEvent } from 'react';
-import { storage } from '../firebase';
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { MdEdit } from "react-icons/md";
-import SongPage from '../pages/SongPage';
+import { storage } from '../firebase';
 
 const UploadForm = (props: any) => {
     const [title, setTitle] = useState<string>("");
@@ -167,7 +148,7 @@ const UploadModal = (props: any) => {
     const [ isUploading, setUploading ] = useState(false);
     return (
         <>
-          {props.for === "upload" ? <Button onClick={onOpen}>Add Song</Button> :
+          {props.for === "upload" ? <Button onClick={onOpen} variant="solid" colorScheme="teal">Add Song</Button> :
             <IconButton
                 aria-label="Edit Song"
                 icon={<MdEdit />}
