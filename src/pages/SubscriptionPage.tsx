@@ -1,10 +1,10 @@
-import { Flex, Heading, IconButton, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
+import { Center, Flex, Heading, IconButton, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
+import axios from "axios"
+import { useEffect, useState } from "react"
 import { BsCheck2Circle } from "react-icons/bs"
 import { MdClose } from "react-icons/md"
 import { Status } from "../interface/Status"
 import { SubscriptionRequest } from "../interface/SubscriptionRequest"
-import axios from "axios";
-import { useEffect, useState } from "react"
 
 
 const requestList: SubscriptionRequest[] = [
@@ -72,8 +72,10 @@ const SubscriptionPage = () => {
   }
 
   return (
+    <Center w="100vw">
     <Flex mt={20} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100vh" pt={5}>
       <Heading color="green.700">Subscription Request</Heading>
+      {requests.length > 0 ? (
       <TableContainer width="80%" mt={10}>
         <Table variant="unstyled">
           <Thead borderBottom="1px" >
@@ -85,7 +87,7 @@ const SubscriptionPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {requests.length > 0 ? requests.map((request, i) => (
+            {requests.map((request, i) => (
               <Tr 
                 key={i}
                 _hover={{
@@ -138,11 +140,13 @@ const SubscriptionPage = () => {
                   )}
                 </Th>
               </Tr>
-            )) : <Heading size = 'md' mt = {10}>You don't have any requests yet!</Heading> }
+            ))}
           </Tbody>
         </Table>
       </TableContainer>
+    ) : <Heading size = 'md' mt = {10}>You don't have any requests yet!</Heading> }
     </Flex>
+    </Center>
   )
 }
 
