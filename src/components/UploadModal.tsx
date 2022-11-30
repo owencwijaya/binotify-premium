@@ -74,26 +74,6 @@ const UploadForm = (props: any) => {
                                 }, 500);
                             }
                         });
-                        // axios.{props.for === "upload" ? post : put}(
-                        //     `http://localhost:3000/song${props.for !== "upload" ? `/${props.song_id}` : ""}`,{
-                        //         judul: title,
-                        //         audio_path: downloadUrl,
-                        //     },
-                        //     {
-                        //         // mode: 'cors', 
-                        //         headers: {
-                        //             'Content-Type': 'application/json',
-                        //             'Authorization': `${sessionStorage.getItem("auth_token")}`
-                        //         },
-                        //     }
-                        // ).then((response) => {
-                        //     if(response.status === 200){
-                        //         setSuccess(true)
-                        //         setTimeout(() => {
-                        //             window.location.href = '/song'
-                        //         }, 500);
-                        //     }
-                        // })
                     });
                 }
             )
@@ -101,7 +81,7 @@ const UploadForm = (props: any) => {
             axios.put(
                 `http://localhost:3000/song${props.for === "edit" ? `/${props.song_id}` : ""}`,{
                     judul: title,
-                    audio_path: "",
+                    audio_path: props.audio_path,
                 },
                 {
                     // mode: 'cors', 
@@ -164,7 +144,7 @@ const UploadModal = (props: any) => {
               <ModalHeader>{props.for === "upload" ? "Add a New" : "Edit"} Song</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <UploadForm for = {props.for} song_id = {props.song_id} onClick = {console.log(props.song_id, props.for)}/>
+                <UploadForm for = {props.for} song_id = {props.song_id} audio_path = {props.audio_path} onClick = {console.log(props.song_id, props.for)}/>
               </ModalBody>
     
               <ModalFooter>

@@ -7,7 +7,7 @@ import UploadModal from "../components/UploadModal"
 import { Song, SongRow } from "../interface/Song"
 
 const SongPage = () => {
-  const limit = 3
+  const limit = 10
   const [songs, setSongs] = useState<Song[]>([])
   const [page, setPage] = useState<number>(1)
   const [totalPage, setTotalPage] = useState<number>(1)
@@ -24,6 +24,7 @@ const SongPage = () => {
       console.log(response)
 
       var songList: Song[] = []
+      console.log(response.data)
       response.data.data.songs.forEach((item: Song) => {
         songList.push({
           _id: item._id,
