@@ -1,4 +1,4 @@
-import { Th, Tr } from "@chakra-ui/react"
+import { HStack, Th, Tr } from "@chakra-ui/react"
 import DeleteModal from "../components/DeleteModal"
 import UploadModal from "../components/UploadModal"
 
@@ -18,9 +18,11 @@ export const SongRow = (props: any) => {
     >
     <Th>{props.i + 1}</Th>
     <Th>{props.song.judul}</Th>
-    <Th display="flex" justifyContent="space-between">
-      <UploadModal for = "edit" song_id = {props.song._id}/>
-      <DeleteModal song_id = {props.song._id} title = {props.song.judul} />
+    <Th>
+      <HStack spacing={5}>
+        <UploadModal for = "edit" song_id = {props.song._id}/>
+        <DeleteModal song_id = {props.song._id} title = {props.song.judul} />
+      </HStack>
     </Th>
   </Tr>
   )
