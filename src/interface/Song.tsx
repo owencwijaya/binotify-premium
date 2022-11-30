@@ -20,7 +20,7 @@ export const SongRow = (props: any) => {
     <Th>{props.song.judul}</Th>
     <Th>
       <HStack spacing={5}>
-        <UploadModal for = "edit" song_id = {props.song._id}/>
+        <UploadModal for = "edit" song_id = {props.song._id} audio_path = {props.song.audio_path}/>
         <DeleteModal song_id = {props.song._id} title = {props.song.judul} />
       </HStack>
     </Th>

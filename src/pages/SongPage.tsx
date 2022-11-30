@@ -25,6 +25,7 @@ const SongPage = () => {
       console.log(response)
 
       var songList: Song[] = []
+      console.log(response.data)
       response.data.data.songs.forEach((item: Song) => {
         songList.push({
           _id: item._id,
