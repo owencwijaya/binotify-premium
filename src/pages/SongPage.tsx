@@ -7,6 +7,7 @@ import UploadModal from "../components/UploadModal"
 import { Song, SongRow } from "../interface/Song"
 
 const SongPage = () => {
+  const url = 'http://localhost:3000'
   const limit = 3
   const [songs, setSongs] = useState<Song[]>([])
   const [page, setPage] = useState<number>(1)
@@ -14,7 +15,7 @@ const SongPage = () => {
   const getSongs = (page: number) => {
     console.log("Get page song", page)
     console.log(sessionStorage.getItem("auth_token"))
-    axios.get(`http://localhost:3000/song?limit=${limit}&page=${page}`, {
+    axios.get(`${url}/song?limit=${limit}&page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `${sessionStorage.getItem("auth_token")}`
@@ -41,7 +42,15 @@ const SongPage = () => {
   }
 
   const handleLogout = () => {
-    sessionStorage.clear()
+    axios.get(`${url}/logout`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${sessionStorage.getItem("auth_token")}`
+      }
+    }).then((response)=>{
+      console.log(response)
+      sessionStorage.clear()
+    })
     window.location.href = "/login"
   }
 
