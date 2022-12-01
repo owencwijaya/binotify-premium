@@ -37,11 +37,12 @@ const LoginPage = () => {
           setErrorMessage("");
 
           let auth_token = response.data.data["authToken"];
+          let user_id = response.data.data["_id"];
           let is_admin = response.data.data["user"]["admin"];
           let user_name = response.data.data["user"]["name"];
 
           sessionStorage.setItem("auth_token", "Bearer " + auth_token);
-          sessionStorage.setItem("user_id", "6384c00c17c1599370398db7");
+          sessionStorage.setItem("user_id", user_id);
           sessionStorage.setItem("is_admin", is_admin);
           sessionStorage.setItem("username", user_name);
 
@@ -57,13 +58,12 @@ const LoginPage = () => {
           setError(true)
           setErrorMessage("Wrong username or password!");
         }
-      },
-      (error) => {
-        console.log(error);
-        setError(true);
-        setErrorMessage(error);
       }
-    )
+    ).catch((error) => {
+      console.log(error.message);
+      setError(true);
+      setErrorMessage(error.message);
+    })
   }
 
 
