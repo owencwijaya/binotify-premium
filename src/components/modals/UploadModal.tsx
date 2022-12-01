@@ -9,7 +9,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage';
 import axios from 'axios';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { MdEdit } from "react-icons/md";
-import { storage } from '../firebase';
+import { storage } from '../../firebase';
 
 const UploadForm = (props: any) => {
     const [title, setTitle] = useState<string>(props.title || "");
@@ -26,13 +26,11 @@ const UploadForm = (props: any) => {
         const retrievedFile: File = event.target.files![0];
         console.log(retrievedFile);
         setFile(retrievedFile);
-        console.log(file)
     }
 
     const handleTitleChange = (event: any) => setTitle(event.target.value);
 
     const sendSong = async(event: SyntheticEvent) => {
-        console.log(fileError, titleError)
         if (!file && props.for === "upload") {
             setFileError(true);
             alert("Please upload the song file!")
@@ -107,8 +105,7 @@ const UploadForm = (props: any) => {
                     judul: title,
                     audio_path: props.audio_path,
                 },
-                {
-                    // mode: 'cors', 
+                { 
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `${sessionStorage.getItem("auth_token")}`
@@ -126,20 +123,19 @@ const UploadForm = (props: any) => {
         }
     }
 
-    useEffect(() => {console.log(progress)}, [progress])
 
     return(
         <>
             <FormControl isInvalid = {titleError}>
                 <FormLabel>Song Title</FormLabel>
-                <Input type = 'name' value = {title}  onChange = {handleTitleChange} />
+                <Input type = 'name' value = {title}  onChange = {handleTitleChange} placeholder = "Insert your song title here..." />
                 {titleError && <FormErrorMessage>Please input the song title.</FormErrorMessage>}
 
             </FormControl>
 
             <FormControl mt = {5} isInvalid = {fileError}>
                 <FormLabel>Song File</FormLabel>
-                <Input type = 'file' onChange = {handleAudioFile}/>
+                <Input type = 'file' onChange = {handleAudioFile} h = {16} p = {4}/>
                 {fileError && <FormErrorMessage>Please input a valid song file. (Allowed extensions: .mp3, .ogg, .wav)</FormErrorMessage>}
             </FormControl>
 
@@ -161,7 +157,7 @@ const UploadModal = (props: any) => {
 
     return (
         <>
-          {props.for === "upload" ? <Button onClick={onOpen} variant="solid" colorScheme="teal">Add Song</Button> :
+          {props.for === "upload" ? <Button onClick={onOpen} variant="solid" colorScheme="teal">Add a New Song!</Button> :
             <IconButton
                 aria-label="Edit Song"
                 icon={<MdEdit />}
@@ -177,7 +173,7 @@ const UploadModal = (props: any) => {
               <ModalHeader>{props.for === "upload" ? "Add a New" : "Edit"} Song</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <UploadForm for = {props.for} song_id = {props.song_id} audio_path = {props.audio_path} title = {props.title} onClick = {console.log(props.song_id, props.for, props.title)}/>
+                <UploadForm for = {props.for} song_id = {props.song_id} audio_path = {props.audio_path} title = {props.title}/>
               </ModalBody>
     
               <ModalFooter>

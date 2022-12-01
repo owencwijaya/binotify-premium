@@ -1,6 +1,6 @@
 import { Td, Tr } from '@chakra-ui/react'
-import SubscriptionModal from '../components/SubscriptionModal'
-import { Subscription } from '../interface/Subscription'
+import SubscriptionModal from '../modals/SubscriptionModal'
+import { Subscription } from '../../interface/Subscription'
 
 interface Props {
   req: Subscription,

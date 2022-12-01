@@ -4,8 +4,8 @@ import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import ButtonPagination from "../components/ButtonPagination"
 import Identity from "../components/Identity"
-import SongRow from "../components/SongRow"
-import UploadModal from "../components/UploadModal"
+import SongRow from "../components/rows/SongRow"
+import UploadModal from "../components/modals/UploadModal"
 import { Song } from "../interface/Song"
 
 const SongPage = () => {
@@ -16,31 +16,32 @@ const SongPage = () => {
   const breakpointSize = useBreakpointValue(['md', 'lg', 'xl'])
   
   const setPages = (page: number) => {
-    console.log("Get page song", page)
-    console.log(sessionStorage.getItem("auth_token"))
     axios.get(`${url}/song?limit=${limit}&page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `${sessionStorage.getItem("auth_token")}`
       }
     }).then((response) => {
-      console.log("Response:")
-      console.log(response)
-
       var songList: Song[] = []
-      console.log(response.data)
-      response.data.data.forEach((item: Song) => {
-        songList.push({
-          _id: item._id,
-          judul: item.judul,
-          audio_path: item.audio_path
+
+      if (response.data.data.length > 1){
+        response.data.data.forEach((item: Song) => {
+          songList.push({
+            _id: item._id,
+            judul: item.judul,
+            audio_path: item.audio_path
+          })
         })
-      })
-      console.log("total page:", response.data.data.totalPages)
+      } else {
+        songList.push({
+          _id: response.data.data._id,
+          judul: response.data.data.judul,
+          audio_path: response.data.data.audio_path
+        })
+      }
 
       setSongs(songList);
       setPage(page);
-      console.log(songs)
   })
   }
 

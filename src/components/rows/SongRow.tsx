@@ -1,7 +1,7 @@
 import { HStack, Td, Tr } from '@chakra-ui/react'
-import DeleteModal from '../components/DeleteModal'
-import UploadModal from '../components/UploadModal'
-import { Song } from "../interface/Song"
+import DeleteModal from '../modals/DeleteModal'
+import UploadModal from '../modals/UploadModal'
+import { Song } from "../../interface/Song"
 
 interface SongProps {
   song: Song,

@@ -1,50 +1,57 @@
 import { Box, Center, Flex, Heading, Table, TableContainer, Tbody, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { Navigate } from "react-router-dom"
 import ButtonPagination from "../components/ButtonPagination"
 import Identity from "../components/Identity"
-import SubsRow from "../components/SubsRow"
+import SubsRow from "../components/rows/SubsRow"
 import { Subscription } from "../interface/Subscription"
-
-
 
 const SubscriptionPage = () => {
   const url = 'http://localhost:3000'
-  const limit = 4
+  const limit = 5
   const [subs, setSubs] = useState<Subscription[]>([]);
   const [page, setPage] = useState<number>(1)
   const breakpointSize = useBreakpointValue(['md', 'lg', 'xl'])
 
-  const getSubscription = () => {
+  const setPages = (page: number) => {
     axios.get(`${url}/subs?limit=${limit}&page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `${sessionStorage.getItem("auth_token")}`
       }
     }).then((response)=>{
+      var subscriptions: Subscription [] = [];
 
-      let subscriptions: Subscription [] = [];
-      console.log(response)
-      response.data.data.forEach((item: Subscription) => {
-        // console.log(item)
-        subscriptions.push({
-          creator_id: item["creator_id"],
-          subscriber_id: item["subscriber_id"],
+      if (response.data.data.length > 1){
+        response.data.data.forEach((item: Subscription) => {
+          subscriptions.push({
+            creator_id: item["creator_id"],
+            subscriber_id: item["subscriber_id"],
+          })
         })
-      })
-      // console.log(subscriptions)
-      setSubs(subscriptions)
+      } else {
+        subscriptions.push({
+          creator_id: response.data.data["creator_id"],
+          subscriber_id: response.data.data["subscriber_id"],
+        })
+      }
+
+      setSubs(subscriptions);
+      setPage(page);
     })
   }
   useEffect(() => {
-    getSubscription()
-    setInterval(getSubscription, 10000)
+    setPages(1);
   }, [])
 
-  const setPages = (page: number) => {
-    setPage(page)
-    getSubscription()
+
+  const is_admin = sessionStorage.getItem("is_admin") === "true"
+
+  if (!is_admin){
+    return <Navigate to = "/song" replace />
   }
+
 
   return (
     <Box minHeight="100vh" pb={10}>

@@ -1,5 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/layout"
-import { Alert, AlertDescription, AlertIcon, Button, FormControl, FormLabel, Image, Input, Center, Link } from "@chakra-ui/react"
+import { Alert, AlertDescription, AlertIcon, Button, FormControl, FormLabel, Image, Input, Center, Link, Text, Divider } from "@chakra-ui/react"
 import axios from "axios"
 import { useState } from "react"
 import { FaRegTimesCircle } from "react-icons/fa"
@@ -19,7 +19,6 @@ const RegisterPage = () => {
       email: email
     }).then(
       (response) => {
-        console.log(response);
         if (response.status === 204){
           setError(true);
           setErrorMessage(`${param} is already taken!`);
@@ -39,7 +38,6 @@ const RegisterPage = () => {
   }
 
   const validateUsername = () => {
-    console.log(username.length)
     if ((!username.match(/^[a-zA-Z0-9_]*$/) || username.trim().length <= 0) && username.length > 0){
       setError(true)
       setErrorMessage("Username must be alphanumeric and cannot contain spaces");
@@ -63,11 +61,6 @@ const RegisterPage = () => {
 
 
   const handleRegister = () => {
-    console.log("email:", email)
-    console.log("password:", password)
-    console.log("username:", username)
-    console.log("name:", name)
-
     if (name === "") {
       setError(true)
       setErrorMessage("Please insert your name!");
@@ -115,19 +108,22 @@ const RegisterPage = () => {
 
   const matchPassword = (confirmPass: string) => {
     if (confirmPass !== password) {
-      console.log("passwords don't match")
-    } else {
-      console.log("passwords match")
-    }
+      setError(true);
+      setErrorMessage("Passwords do not match!")
+    } 
   }
 
 
   return (
-    <Center w = "100vw">
+    <Center w = "100vw" background = "gray.300">
       <Flex height="100vh" alignItems="center" justifyContent="center" p={10}>
-        <Flex direction="column" width="30vw" minWidth={300} background="gray.300" rounded={10} padding={10} alignItems = "center">
-          <Image src={BinotifyLogo} width="75%" m={5} alignSelf="center"/>
-          <Heading mb={3} fontSize="2xl" color="green.700" alignSelf="center">Register</Heading>
+        <Flex direction="column" width="30vw" minWidth={300} background="white" rounded={10} padding={10} alignItems = "center">
+        <Flex direction="row" m = {5} justifyContent = "center">
+            <Image src={BinotifyLogo} width="50%" alignSelf="center"/>     
+            <Text color="green.600" ml = {2} fontSize={{ base: '16px', md: '20px', lg: '24px' }}>Premium</Text>
+          </Flex>
+          <Divider/>
+          <Heading m={5} color="green.700" size = "lg">Register</Heading>
 
           { error &&
             <Alert status="error" my={4} rounded={4}>
@@ -136,28 +132,26 @@ const RegisterPage = () => {
             </Alert>
           }
           
-          <FormControl my={3}>
-            <FormLabel>Name</FormLabel>
+          <FormControl my={1}>
+            <FormLabel>Insert your name here</FormLabel>
             <Input
               placeholder="John Doe"
               type="text"
               rounded={4}
+              padding={6}
               value={name}
-              fontSize="sm"
               height="2rem"
               onChange={(e) => setName(e.target.value)}
             />
           </FormControl>
           
           <FormControl my={1}>
-            <FormLabel>Username</FormLabel>
+            <FormLabel>Insert your username here</FormLabel>
             <Input
               placeholder="john-doe"
-              type="text"
               rounded={4}
+              padding={6}
               value={username}
-              fontSize="sm"
-              p={2}
               height="2rem"
               onChange={(e) => setUsername(e.target.value)}
               onBlur = {validateUsername}
@@ -170,9 +164,8 @@ const RegisterPage = () => {
               placeholder="john_doe@binotify.com"
               type="email"
               rounded={4}
+              padding={6}
               value={email}
-              fontSize="sm"
-              p={2}
               height="2rem"
               onChange={(e) => setEmail(e.target.value)}
               onBlur={validateEmail}
@@ -182,12 +175,11 @@ const RegisterPage = () => {
           <FormControl my={1}>
             <FormLabel>Password</FormLabel>
             <Input
-              placeholder="password"
+              placeholder="Input your password here"
               type="password"
               rounded={4}
+              padding={6}
               value={password}
-              fontSize="sm"
-              p={2}
               height="2rem"
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -196,19 +188,21 @@ const RegisterPage = () => {
           <FormControl my={1}>
             <FormLabel>Confirm Password</FormLabel>
             <Input
-              placeholder="Confirm password"
+              placeholder="Please re-input your password here"
               type="password"
               rounded={4}
-              fontSize="sm"
-              p={2}
+              padding={6}
               height="2rem"
               onChange={(e) => matchPassword(e.target.value)}
             />
           </FormControl>
-          <Button color="green.700" mt={3} onClick={handleRegister}>Register</Button>
-          <Link color = "green.600" href = '/r'>
-            Already have an account? Log In
-          </Link>
+          <Button color="green.700" m = {5} p = {6} fontSize = {18} w = {"60%"} onClick={handleRegister}>Register</Button>
+          <Flex direction = "row">
+            <Text>Already have an account?</Text>
+            <Link href = '/' color = "green.600" fontWeight="bold" ml = {1}>
+              Log In
+            </Link>
+          </Flex>
         </Flex>
       </Flex>
     </Center>
