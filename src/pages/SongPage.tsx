@@ -29,7 +29,7 @@ const SongPage = () => {
 
       var songList: Song[] = []
       console.log(response.data)
-      response.data.data.songs.forEach((item: Song) => {
+      response.data.data.forEach((item: Song) => {
         songList.push({
           _id: item._id,
           judul: item.judul,
