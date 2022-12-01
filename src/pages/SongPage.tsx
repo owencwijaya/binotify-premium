@@ -22,9 +22,10 @@ const SongPage = () => {
         'Authorization': `${sessionStorage.getItem("auth_token")}`
       }
     }).then((response) => {
+      console.log(response)
       var songList: Song[] = []
 
-      if (response.data.data.length > 1){
+      if (response.data.data.length > 0){
         response.data.data.forEach((item: Song) => {
           songList.push({
             _id: item._id,
@@ -32,18 +33,16 @@ const SongPage = () => {
             audio_path: item.audio_path
           })
         })
-      } else {
-        songList.push({
-          _id: response.data.data._id,
-          judul: response.data.data.judul,
-          audio_path: response.data.data.audio_path
-        })
       }
 
       setSongs(songList);
       setPage(page);
   })
   }
+
+  useEffect(() => {
+    console.log(songs)
+  }, [songs])
 
   useEffect(() => {
     setPages(1)

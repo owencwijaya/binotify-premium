@@ -110,7 +110,10 @@ const RegisterPage = () => {
     if (confirmPass !== password) {
       setError(true);
       setErrorMessage("Passwords do not match!")
+      return;
     } 
+    setError(false);
+    setErrorMessage("");
   }
 
 

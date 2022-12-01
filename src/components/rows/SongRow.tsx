@@ -39,7 +39,7 @@ const SongRow = (props: SongProps) => {
       px={{ base: '4px', sm:'8px', md: '12px'}}
     >
       <HStack spacing={{base: '4px', sm: '8px', md: '16px'}}>
-        <UploadModal for = "edit" song_id = {song._id} audio_path = {song.audio_path}/>
+        <UploadModal for = "edit" song_id = {song._id} audio_path = {song.audio_path} title = {song.judul}/>
         <DeleteModal song_id = {song._id} title = {song.judul} />
       </HStack>
     </Td>

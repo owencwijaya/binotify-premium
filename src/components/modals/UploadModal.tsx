@@ -37,9 +37,9 @@ const UploadForm = (props: any) => {
             return;
         }
 
-        if (title.length === 0){
+        if (title.length === 0 && props.for === "upload") {
             setTitleError(true);
-            alert("Please enter the title!" + titleError)
+            alert("Please enter the title!")
             return;
         }
 
@@ -128,7 +128,7 @@ const UploadForm = (props: any) => {
         <>
             <FormControl isInvalid = {titleError}>
                 <FormLabel>Song Title</FormLabel>
-                <Input type = 'name' value = {title}  onChange = {handleTitleChange} placeholder = "Insert your song title here..." />
+                <Input type = 'name' value = {title} onChange = {handleTitleChange} placeholder = "Insert your song title here..." />
                 {titleError && <FormErrorMessage>Please input the song title.</FormErrorMessage>}
 
             </FormControl>
