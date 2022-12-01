@@ -33,7 +33,7 @@ const ButtonPagination = (props: ButtonProps) => {
         minHeight= "32px"
         variant="outline"
         colorScheme="teal"
-        // disabled={isEnd ? true : false}
+        disabled={isEnd ? true : false}
         onClick={() => setPage(page + 1)}
       >
         Next

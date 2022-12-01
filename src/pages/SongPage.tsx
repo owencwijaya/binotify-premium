@@ -4,12 +4,13 @@ import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import ButtonPagination from "../components/ButtonPagination"
 import Identity from "../components/Identity"
+import SongRow from "../components/SongRow"
 import UploadModal from "../components/UploadModal"
-import { Song, SongRow } from "../interface/Song"
+import { Song } from "../interface/Song"
 
 const SongPage = () => {
   const url = 'http://localhost:3000'
-  const limit = 10
+  const limit = 5
   const [songs, setSongs] = useState<Song[]>([])
   const [page, setPage] = useState<number>(1)
   const breakpointSize = useBreakpointValue(['md', 'lg', 'xl'])
@@ -62,7 +63,7 @@ const SongPage = () => {
         <UploadModal for = "upload"/>
         {songs.length !== 0 ?
         <Flex width={{base: '100%', md: '80%'}} mt={{base: '5', md: '10'}} direction="column" alignItems="center">
-          <TableContainer width="90%" borderRadius="md">
+          <TableContainer width="100%" borderRadius="md">
             <Table variant="unstyled">
               <Thead borderBottom="1px" color="green.900" bg="green.200">    
                 <Tr borderTopRadius="10px">
@@ -73,7 +74,8 @@ const SongPage = () => {
               </Thead>
               <Tbody>
                 {songs.map((song, i) => (
-                  <SongRow key={i} song = {song} i = {(page-1)*limit+i}/>
+                  (i < limit) &&
+                  <SongRow key={i} song={song} index={(page-1)*limit+i}/>
                 ))}
               </Tbody>
             </Table>
