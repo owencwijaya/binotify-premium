@@ -7,7 +7,7 @@ import {
 
 import { getDownloadURL, ref, uploadBytesResumable } from '@firebase/storage';
 import axios from 'axios';
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { MdEdit } from "react-icons/md";
 import { storage } from '../firebase';
 
@@ -48,25 +48,27 @@ const UploadForm = (props: any) => {
         if (file){
             const extension: string | undefined = file.name.split('.').pop();
             const allowedExtensions: string[] = ["mp3", "wav", "ogg"];
-            const storageRef = ref(storage, `/files/${file!.name}`);
-            const uploadTask = uploadBytesResumable(storageRef, file);
 
             if (!allowedExtensions.includes(extension!) || extension === undefined){
                 setFileError(true);
                 alert("Invalid file extension!")
                 return;
             }
-    
+
+                
             setUploading(true);
             setFileError(false);
             setTitleError(false);
+
+            const storageRef = ref(storage, `/files/${file!.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+
             uploadTask.on("state_changed", 
-            (snapshot) => {
-                const progressValue = Math.round(snapshot.bytesTransferred * 100 / snapshot.totalBytes) ;
-                console.log(progressValue)
-                setProgress(progressValue);
-                console.log(progress)
-            },
+                (snapshot) => {
+                    const progressValue = Math.round(snapshot.bytesTransferred * 100 / snapshot.totalBytes) ;
+                    setProgress(progressValue);
+                },
     
                 (error: any) => {
                     console.log(error);
@@ -124,6 +126,8 @@ const UploadForm = (props: any) => {
         }
     }
 
+    useEffect(() => {console.log(progress)}, [progress])
+
     return(
         <>
             <FormControl isInvalid = {titleError}>
@@ -138,7 +142,8 @@ const UploadForm = (props: any) => {
                 <Input type = 'file' onChange = {handleAudioFile}/>
                 {fileError && <FormErrorMessage>Please input a valid song file. (Allowed extensions: .mp3, .ogg, .wav)</FormErrorMessage>}
             </FormControl>
-            <Progress py = {2} colorScheme='green' size='md'  mt = {5} value = {progress}/>
+
+            <Progress colorScheme = 'green'  mt = {5} size = 'md' isIndeterminate={isUploading}/>
             <Flex dir = "row" mt = {5}>
                 <Text hidden={!success}>Song successfully {props.for === 'upload' ? 'uploaded' : 'edited'}!</Text>
                 <Spacer/>
