@@ -18,7 +18,7 @@ const SubscriptionPage = () => {
   const [totalPage, setTotalPage] = useState<number>(1)
   const toast = useToast();
 
-  useEffect(() => {
+  const getSubscription = () => {
     axios.get(`${url}/subs?limit=${limit}&page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -38,6 +38,10 @@ const SubscriptionPage = () => {
       console.log(subscriptions)
       setSubs(subscriptions)
     })
+  }
+  useEffect(() => {
+    getSubscription()
+    setInterval(getSubscription, 10000)
   }, [])
 
   
