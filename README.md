@@ -1,4 +1,4 @@
-b,![src/assets/images/binotify.png](src/assets/images/binotify.png)
+![src/assets/images/binotify.png](src/assets/images/binotify.png)
 
 # BiNotify Premium: Web Services untuk aplikasi BiNotify menggunakan _SOAP_ dan _REST_
 
@@ -111,7 +111,7 @@ Legenda NIM adalah sebagai berikut:
 
 ### Client Side
 
-- Halaman Login + Register: 13520117 + 13520124
+- Halaman Login + Register: 13520043 + 13520117 + 13520124
 - Halaman Home + Header: 13520117 + 13520124
 - Halaman Daftar Lagu Premium: 13520043 + 13520117 + 13520124
 - Halaman Upload Lagu Premium: 13520124
