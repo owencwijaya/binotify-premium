@@ -1,11 +1,8 @@
-import { Box, Button, Center, Flex, Heading, IconButton, Table, TableContainer, Tbody, Th, Thead, Tr, useToast } from "@chakra-ui/react"
+import { Box, Center, Flex, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { BiLogOut } from "react-icons/bi"
-import { BsCheck2Circle } from "react-icons/bs"
-import { MdClose } from "react-icons/md"
+import Identity from "../components/Identity"
 import SubscriptionModal from "../components/SubscriptionModal"
-import UploadModal from "../components/UploadModal"
 import { Subscription } from "../interface/Subscription"
 
 
@@ -16,7 +13,7 @@ const SubscriptionPage = () => {
   const [subs, setSubs] = useState<Subscription[]>([]);
   const [page, setPage] = useState<number>(1)
   const [totalPage, setTotalPage] = useState<number>(1)
-  const toast = useToast();
+  const breakpointSize = useBreakpointValue(['md', 'lg', 'xl'])
 
   const getSubscription = () => {
     axios.get(`${url}/subs?limit=${limit}&page=${page}`, {
@@ -27,15 +24,15 @@ const SubscriptionPage = () => {
     }).then((response)=>{
 
       let subscriptions: Subscription [] = [];
-      console.log(response.data)
+      // console.log(response.data)
       response.data.data.forEach((item: Subscription) => {
-        console.log(item)
+        // console.log(item)
         subscriptions.push({
           creator_id: item["creator_id"],
           subscriber_id: item["subscriber_id"],
         })
       })
-      console.log(subscriptions)
+      // console.log(subscriptions)
       setSubs(subscriptions)
     })
   }
@@ -44,42 +41,18 @@ const SubscriptionPage = () => {
     setInterval(getSubscription, 10000)
   }, [])
 
-  
-  
-  const handleLogout = () => {
-    axios.get(`${url}/logout`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${sessionStorage.getItem("auth_token")}`
-      }
-    }).then((response)=>{
-      console.log("Response logout", response)
-      sessionStorage.clear()
-    })
-    window.location.href = "/login"
-  }
-
   return (
     <Box minHeight="100vh">
-    <Flex justifyContent="flex-start" mt={5} ml={5}>
-      <Button
-        leftIcon={<BiLogOut/>}
-        variant="solid"
-        colorScheme="red"
-        onClick={handleLogout}
-      >
-        Logout
-      </Button>
-    </Flex>
+    <Identity/>
     <Center w="100vw">
     <Flex mt={20} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100vh" pt={5}>
-      <Heading color="green.700">Subscription Request</Heading>
+      <Heading color="green.700" size={breakpointSize}>Subscription Request</Heading>
       {subs.length > 0 ? (
-      <TableContainer width="80%" mt={10}>
+      <TableContainer width="80%" mt={10} borderRadius="md">
         <Table variant="unstyled">
-          <Thead borderBottom="1px" >
+          <Thead borderBottom="1px" color="green.900" bg="green.200">
             <Tr>
-              <Th width="1%" fontSize="md">#</Th>
+              <Th width="1%" fontSize="md" textAlign="center">#</Th>
               <Th width="35%" fontSize="md">User ID</Th>
               <Th width="35%" fontSize="md">Artist ID</Th>
             </Tr>
@@ -88,25 +61,29 @@ const SubscriptionPage = () => {
             {subs.map((request, i) => (
               <Tr 
                 key={i}
+                borderRadius="md"
+                color="black"
+                fontWeight="semibold"
+                borderBottom="1px solid #e2e8f0"
                 _hover={{
                   background: "teal.100"
                 }}
               >
-                <Th>{i+1}</Th>
-                <Th>{request.subscriber_id}</Th>
-                <Th>{request.creator_id}</Th>
-                <Th display="flex" justifyContent="center">
+                <Td textAlign="center" px={{ base: '4px', sm:'8px', md: '12px'}}>{i+1}</Td>
+                <Td px={{ base: '4px', sm:'8px', md: '12px'}}>{request.subscriber_id}</Td>
+                <Td px={{ base: '4px', sm:'8px', md: '12px'}}>{request.creator_id}</Td>
+                <Td display="flex" justifyContent="center" px={{ base: '4px', sm:'8px', md: '12px'}}>
                     <>
                       <SubscriptionModal action = "accept" creator_id = {request.creator_id} subscriber_id = {request.subscriber_id} />
                       <SubscriptionModal action = "reject" creator_id = {request.creator_id} subscriber_id = {request.subscriber_id} />
                     </>
-                </Th>
+                </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
       </TableContainer>
-    ) : <Heading size = 'md' mt = {10}>You don't have any requests yet!</Heading> }
+    ) : <Heading fontSize={{ base: '16px', md: '20px', lg: '24px' }} mt = {5}>You don't have any requests yet!</Heading> }
     </Flex>
     </Center>
     </Box>

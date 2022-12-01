@@ -1,5 +1,5 @@
 import { Flex, Heading } from "@chakra-ui/layout"
-import { Alert, AlertDescription, AlertIcon, Button, FormControl, FormLabel, Image, Input, Center, Link } from "@chakra-ui/react"
+import { Alert, AlertDescription, AlertIcon, Button, Center, FormControl, FormLabel, Image, Input, Link } from "@chakra-ui/react"
 import axios from "axios"
 import { useState } from "react"
 import BinotifyLogo from "../assets/images/binotify.png"
@@ -38,10 +38,12 @@ const LoginPage = () => {
           let auth_token = response.data.data["authToken"];
           let is_admin = response.data.data["user"]["admin"];
           let user_id = response.data.data["user"]["_id"];
+          let user_name = response.data.data["user"]["name"]
 
           sessionStorage.setItem("auth_token", "Bearer " + auth_token);
           sessionStorage.setItem("user_id", "6384c00c17c1599370398db7");
           sessionStorage.setItem("is_admin", is_admin);
+          sessionStorage.setItem("username", user_name);
 
           if (is_admin){
             window.location.href = "/subscription";
@@ -85,7 +87,7 @@ const LoginPage = () => {
           }
           
           <FormControl my={3}>
-            <FormLabel>username</FormLabel>
+            <FormLabel>Username</FormLabel>
             <Input
               placeholder="Insert username here"
               type="username"

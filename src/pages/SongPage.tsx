@@ -1,9 +1,9 @@
-import { Box, Button, Center, Flex, Heading, Stack, Table, TableContainer, Tbody, Text, Th, Thead, Tr } from "@chakra-ui/react"
+import { Box, Button, Center, Flex, Heading, Stack, Table, TableContainer, Tbody, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { BiLogOut } from "react-icons/bi"
 import { GrFormNext, GrFormPrevious } from "react-icons/gr"
 import { Navigate } from "react-router-dom"
+import Identity from "../components/Identity"
 import UploadModal from "../components/UploadModal"
 import { Song, SongRow } from "../interface/Song"
 
@@ -13,6 +13,7 @@ const SongPage = () => {
   const [songs, setSongs] = useState<Song[]>([])
   const [page, setPage] = useState<number>(1)
   const [totalPage, setTotalPage] = useState<number>(1)
+  const breakpointSize = useBreakpointValue(['md', 'lg', 'xl'])
   
   const getSongs = (page: number) => {
     console.log("Get page song", page)
@@ -44,19 +45,6 @@ const SongPage = () => {
   })
   }
 
-  const handleLogout = () => {
-    axios.get(`${url}/logout`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${sessionStorage.getItem("auth_token")}`
-      }
-    }).then((response)=>{
-      console.log(response)
-      sessionStorage.clear()
-    })
-    window.location.href = "/login"
-  }
-
   useEffect(() => {
     getSongs(1)
   }, [])
@@ -68,28 +56,19 @@ const SongPage = () => {
   }
 
   return (
-    <Box minHeight="100vh">
-    <Flex justifyContent="flex-start" mt={5} ml={5}>
-      <Button
-        leftIcon={<BiLogOut/>}
-        variant="solid"
-        colorScheme="red"
-        onClick={handleLogout}
-      >
-        Logout
-      </Button>
-    </Flex>
+    <Box minHeight="100vh" pb={10}>
+    <Identity/>
     <Center w = "100vw">
       <Flex mt={10} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100%">
-        <Heading color="green.700" mb={5}>Your Premium Songs</Heading>
+        <Heading color="green.700" size={breakpointSize} mb={5}>Your Premium Songs</Heading>
         <UploadModal for = "upload"/>
         {songs.length !== 0 ?
         <Flex width="80%" mt={10} direction="column" alignItems="center">
-          <TableContainer width="100%">
+          <TableContainer width="90%" borderRadius="md">
             <Table variant="unstyled">
-              <Thead borderBottom="1px" >    
-                <Tr>
-                  <Th width="1%" fontSize="md">#</Th>
+              <Thead borderBottom="1px" color="green.900" bg="green.200">    
+                <Tr borderTopRadius="10px">
+                  <Th width="1%" fontSize="md" textAlign="center">#</Th>
                   <Th width="44%" fontSize="md">Judul</Th>
                   <Th width="10%" fontSize="md"></Th>
                 </Tr>
@@ -133,7 +112,7 @@ const SongPage = () => {
             </Box>
           </Stack>
         </Flex>
-        : <Heading size = 'md' mt = {10}>You don't have any songs yet!</Heading>}
+        : <Heading fontSize={{ base: '20px', md: '28px', lg: '32px' }} mt = {5}>You don't have any songs yet!</Heading>}
       </Flex>
     </Center>
     </Box>
