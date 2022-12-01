@@ -62,7 +62,8 @@ const LoginPage = () => {
     ).catch((error) => {
       console.log(error.message);
       setError(true);
-      setErrorMessage(error.message);
+      setErrorMessage(error.message);;
+      
     })
   }
 
