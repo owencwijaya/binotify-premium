@@ -1,8 +1,8 @@
-import { Box, Button, Center, Flex, Heading, Stack, Table, TableContainer, Tbody, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react"
+import { Box, Center, Flex, Heading, Table, TableContainer, Tbody, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { GrFormNext, GrFormPrevious } from "react-icons/gr"
 import { Navigate } from "react-router-dom"
+import ButtonPagination from "../components/ButtonPagination"
 import Identity from "../components/Identity"
 import UploadModal from "../components/UploadModal"
 import { Song, SongRow } from "../interface/Song"
@@ -12,10 +12,9 @@ const SongPage = () => {
   const limit = 10
   const [songs, setSongs] = useState<Song[]>([])
   const [page, setPage] = useState<number>(1)
-  const [totalPage, setTotalPage] = useState<number>(1)
   const breakpointSize = useBreakpointValue(['md', 'lg', 'xl'])
   
-  const getSongs = (page: number) => {
+  const setPages = (page: number) => {
     console.log("Get page song", page)
     console.log(sessionStorage.getItem("auth_token"))
     axios.get(`${url}/song?limit=${limit}&page=${page}`, {
@@ -40,13 +39,12 @@ const SongPage = () => {
 
       setSongs(songList);
       setPage(page);
-      setTotalPage(response.data.data.totalPages);
       console.log(songs)
   })
   }
 
   useEffect(() => {
-    getSongs(1)
+    setPages(1)
   }, [])
 
   const is_admin = sessionStorage.getItem("is_admin") === "true"
@@ -59,18 +57,18 @@ const SongPage = () => {
     <Box minHeight="100vh" pb={10}>
     <Identity/>
     <Center w = "100vw">
-      <Flex mt={10} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100%">
+      <Flex mt={{base: '5', md: '10'}} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100%">
         <Heading color="green.700" size={breakpointSize} mb={5}>Your Premium Songs</Heading>
         <UploadModal for = "upload"/>
         {songs.length !== 0 ?
-        <Flex width="80%" mt={10} direction="column" alignItems="center">
+        <Flex width={{base: '100%', md: '80%'}} mt={{base: '5', md: '10'}} direction="column" alignItems="center">
           <TableContainer width="90%" borderRadius="md">
             <Table variant="unstyled">
               <Thead borderBottom="1px" color="green.900" bg="green.200">    
                 <Tr borderTopRadius="10px">
-                  <Th width="1%" fontSize="md" textAlign="center">#</Th>
-                  <Th width="44%" fontSize="md">Judul</Th>
-                  <Th width="10%" fontSize="md"></Th>
+                  <Th width="1%" fontSize={{base: 'sm', md: 'md'}} textAlign="center">#</Th>
+                  <Th width="44%" fontSize={{base: 'sm', md: 'md'}}>Judul</Th>
+                  <Th width="10%" fontSize={{base: 'sm', md: 'md'}}></Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -80,37 +78,7 @@ const SongPage = () => {
               </Tbody>
             </Table>
           </TableContainer>
-          <Stack direction="row" alignItems="center" spacing={10} justifyContent="center" width="40%" mt={5}>
-            <Box minWidth="120px">
-              <Button
-                leftIcon={<GrFormPrevious/>}
-                variant="outline"
-                size="md"
-                minWidth="120px"
-                height="40px"
-                colorScheme="teal"
-                display={page !== 1 ? "block" : "none"}
-                onClick={() => getSongs(page - 1)}
-              >
-                Previous
-              </Button>
-            </Box>
-            (<Text>{page}/{totalPage}</Text>)
-            <Box minWidth="120px">
-              <Button
-                rightIcon={<GrFormNext/>}
-                variant="outline"
-                size="md"
-                minWidth="120px"
-                height="40px"
-                colorScheme="teal"
-                display={page !== totalPage ? "block" : "none"}
-                onClick={() => getSongs(page + 1)}
-              >
-                Next
-              </Button>
-            </Box>
-          </Stack>
+          <ButtonPagination page={page} setPage={setPages} isEnd={songs.length <= limit}/>
         </Flex>
         : <Heading fontSize={{ base: '20px', md: '28px', lg: '32px' }} mt = {5}>You don't have any songs yet!</Heading>}
       </Flex>

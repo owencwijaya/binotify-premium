@@ -1,6 +1,7 @@
 import { Box, Center, Flex, Heading, Table, TableContainer, Tbody, Td, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import ButtonPagination from "../components/ButtonPagination"
 import Identity from "../components/Identity"
 import SubscriptionModal from "../components/SubscriptionModal"
 import { Subscription } from "../interface/Subscription"
@@ -47,43 +48,46 @@ const SubscriptionPage = () => {
     <Center w="100vw">
     <Flex mt={20} direction="column" justifyContent="flex-start" alignItems="center" width="100%" height="100vh" pt={5}>
       <Heading color="green.700" size={breakpointSize}>Subscription Request</Heading>
-      {subs.length > 0 ? (
-      <TableContainer width="80%" mt={10} borderRadius="md">
-        <Table variant="unstyled">
-          <Thead borderBottom="1px" color="green.900" bg="green.200">
-            <Tr>
-              <Th width="1%" fontSize="md" textAlign="center">#</Th>
-              <Th width="35%" fontSize="md">User ID</Th>
-              <Th width="35%" fontSize="md">Artist ID</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {subs.map((request, i) => (
-              <Tr 
-                key={i}
-                borderRadius="md"
-                color="black"
-                fontWeight="semibold"
-                borderBottom="1px solid #e2e8f0"
-                _hover={{
-                  background: "teal.100"
-                }}
-              >
-                <Td textAlign="center" px={{ base: '4px', sm:'8px', md: '12px'}}>{i+1}</Td>
-                <Td px={{ base: '4px', sm:'8px', md: '12px'}}>{request.subscriber_id}</Td>
-                <Td px={{ base: '4px', sm:'8px', md: '12px'}}>{request.creator_id}</Td>
-                <Td display="flex" justifyContent="center" px={{ base: '4px', sm:'8px', md: '12px'}}>
-                    <>
-                      <SubscriptionModal action = "accept" creator_id = {request.creator_id} subscriber_id = {request.subscriber_id} />
-                      <SubscriptionModal action = "reject" creator_id = {request.creator_id} subscriber_id = {request.subscriber_id} />
-                    </>
-                </Td>
+      {subs.length > 0 ?
+      <Flex width={{base: '100%', md: '80%'}} mt={{base: '5', md: '10'}} direction="column" alignItems="center">
+        <TableContainer width={{base: '100%', md: '80%'}} mt={10} borderRadius="md">
+          <Table variant="unstyled">
+            <Thead borderBottom="1px" color="green.900" bg="green.200">
+              <Tr>
+                <Th width="1%" fontSize="md" textAlign="center">#</Th>
+                <Th width="35%" fontSize="md">User ID</Th>
+                <Th width="35%" fontSize="md">Artist ID</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    ) : <Heading fontSize={{ base: '16px', md: '20px', lg: '24px' }} mt = {5}>You don't have any requests yet!</Heading> }
+            </Thead>
+            <Tbody>
+              {subs.map((request, i) => (
+                <Tr 
+                  key={i}
+                  borderRadius="md"
+                  color="black"
+                  fontWeight="semibold"
+                  borderBottom="1px solid #e2e8f0"
+                  _hover={{
+                    background: "teal.100"
+                  }}
+                >
+                  <Td textAlign="center" px={{ base: '4px', sm:'8px', md: '12px'}}>{i+1}</Td>
+                  <Td px={{ base: '4px', sm:'8px', md: '12px'}}>{request.subscriber_id}</Td>
+                  <Td px={{ base: '4px', sm:'8px', md: '12px'}}>{request.creator_id}</Td>
+                  <Td display="flex" justifyContent="center" px={{ base: '4px', sm:'8px', md: '12px'}}>
+                      <>
+                        <SubscriptionModal action = "accept" creator_id = {request.creator_id} subscriber_id = {request.subscriber_id} />
+                        <SubscriptionModal action = "reject" creator_id = {request.creator_id} subscriber_id = {request.subscriber_id} />
+                      </>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+        <ButtonPagination page={page} setPage={setPage} isEnd={subs.length <= limit}/>
+      </Flex>
+    : <Heading fontSize={{ base: '16px', md: '20px', lg: '24px' }} mt = {5}>You don't have any requests yet!</Heading> }
     </Flex>
     </Center>
     </Box>
