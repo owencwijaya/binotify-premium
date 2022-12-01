@@ -61,7 +61,7 @@ const SubscriptionPage = () => {
           <Heading color="green.700" size={breakpointSize}>Subscription Request</Heading>
           {subs.length > 0 ?
           <Flex width={{base: '100%', md: '80%'}} mt={{base: '5', md: '10'}} direction="column" alignItems="center">
-            <TableContainer width="100%" mt={{base: '5', md: '10'}} borderRadius="md">
+            <TableContainer width="90%" mt={{base: '5', md: '10'}} borderRadius="md">
               <Table variant="unstyled">
                 <Thead borderBottom="1px" color="green.900" bg="green.200">
                   <Tr>

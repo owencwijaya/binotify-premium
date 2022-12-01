@@ -19,7 +19,7 @@ const ButtonPagination = (props: ButtonProps) => {
         minWidth={{base: '90px', md:'100px'}}
         minHeight= "32px"
         variant="outline"
-        colorScheme="teal"
+        colorScheme="green"
         disabled={page === 1 ? true : false}
         onClick={() => setPage(page - 1)}
       >
@@ -32,7 +32,7 @@ const ButtonPagination = (props: ButtonProps) => {
         minWidth={{base: '90px', md:'100px'}}
         minHeight= "32px"
         variant="outline"
-        colorScheme="teal"
+        colorScheme="green"
         disabled={isEnd ? true : false}
         onClick={() => setPage(page + 1)}
       >

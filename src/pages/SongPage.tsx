@@ -4,8 +4,8 @@ import { useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import ButtonPagination from "../components/ButtonPagination"
 import Identity from "../components/Identity"
-import SongRow from "../components/rows/SongRow"
 import UploadModal from "../components/modals/UploadModal"
+import SongRow from "../components/rows/SongRow"
 import { Song } from "../interface/Song"
 
 const SongPage = () => {
@@ -64,7 +64,7 @@ const SongPage = () => {
         <UploadModal for = "upload"/>
         {songs.length !== 0 ?
         <Flex width={{base: '100%', md: '80%'}} mt={{base: '5', md: '10'}} direction="column" alignItems="center">
-          <TableContainer width="100%" borderRadius="md">
+          <TableContainer width="90%" borderRadius="md">
             <Table variant="unstyled">
               <Thead borderBottom="1px" color="green.900" bg="green.200">    
                 <Tr borderTopRadius="10px">

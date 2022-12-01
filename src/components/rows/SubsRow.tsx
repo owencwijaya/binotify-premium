@@ -1,6 +1,6 @@
 import { Td, Tr } from '@chakra-ui/react'
-import SubscriptionModal from '../modals/SubscriptionModal'
 import { Subscription } from '../../interface/Subscription'
+import SubscriptionModal from '../modals/SubscriptionModal'
 
 interface Props {
   req: Subscription,
@@ -16,7 +16,7 @@ const SubsRow = (props: Props) => {
       fontWeight="semibold"
       borderBottom="1px solid #e2e8f0"
       _hover={{
-        background: "teal.100"
+        background: "green.100"
       }}
     >
       <Td
