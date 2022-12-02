@@ -35,7 +35,7 @@ const SubsRow = (props: Props) => {
         textAlign="center"
         px={{ base: '4px', sm:'8px', md: '12px'}}
       >
-        {req.creator_id}
+        {req.artist_name}
       </Td>
       <Td 
         display="flex" justifyContent="center" 
