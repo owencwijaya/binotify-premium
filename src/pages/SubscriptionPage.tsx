@@ -91,7 +91,7 @@ const SubscriptionPage = () => {
             position="absolute"
             top="50%"
             left="50%"
-            display={isLoading ? "block" : "none"}
+            display={isLoading && subs.length > 0 ? "block" : "none"}
           />
           <Heading color="green.700" size={breakpointSize}>Subscription Request</Heading>
           {subs.length > 0 ?

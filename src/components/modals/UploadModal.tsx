@@ -33,13 +33,11 @@ const UploadForm = (props: any) => {
     const sendSong = async(event: SyntheticEvent) => {
         if (!file && props.for === "upload") {
             setFileError(true);
-            alert("Please upload the song file!")
             return;
         }
 
         if (title.length === 0 && props.for === "upload") {
             setTitleError(true);
-            alert("Please enter the title!")
             return;
         }
 
@@ -49,7 +47,6 @@ const UploadForm = (props: any) => {
 
             if (!allowedExtensions.includes(extension!) || extension === undefined){
                 setFileError(true);
-                alert("Invalid file extension!")
                 return;
             }
 

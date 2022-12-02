@@ -62,6 +62,7 @@ const LoginPage = () => {
     ).catch((error) => {
       console.log(error.message);
       setError(true);
+      setErrorMessage("Error in logging in user!");
       if(error.response.status === 401){
       setErrorMessage("Wrong email or password!");
     }else{
