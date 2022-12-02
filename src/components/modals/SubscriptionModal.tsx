@@ -28,10 +28,11 @@ import { MdClose } from "react-icons/md";
               },
           }
       ).then((response) => {
+        console.log(response)
         toast({
-          title: response.status === 200 ? "Subscription updated." : "Error",
+          title: response.status == 200 ? "Subscription updated." : "Error",
           description: response.data.message,
-          status: response.status === 200 ? "success" : "error",
+          status: response.status == 200 ? "success" : "error",
           duration: 2000,
           isClosable: true,
           onCloseComplete() {
