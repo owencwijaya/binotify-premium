@@ -1,8 +1,7 @@
 import { Flex, Heading } from "@chakra-ui/layout"
-import { Alert, AlertDescription, AlertIcon, Button, FormControl, FormLabel, Image, Input, Center, Link, Text, Divider } from "@chakra-ui/react"
+import { Alert, AlertDescription, AlertIcon, Button, Center, Divider, FormControl, FormLabel, Image, Input, Link, Text, useToast } from "@chakra-ui/react"
 import axios from "axios"
 import { useState } from "react"
-import { FaRegTimesCircle } from "react-icons/fa"
 import BinotifyLogo from "../assets/images/binotify.png"
 
 const RegisterPage = () => {
@@ -12,6 +11,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("")
   const [error, setError] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
+  const toast = useToast()
 
   const checkUnique = (param: String) => {
     axios.post(`http://localhost:3000/validate/${param.toLowerCase()}`, {
@@ -96,11 +96,21 @@ const RegisterPage = () => {
         setErrorMessage(response.data.message);
         return;
       }
-
-      alert("Successfully registered user!");
+      
+      toast({
+        title: "Account created.",
+        description: "Successfully registered user!",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        onCloseComplete() {
+          window.location.href = "/login";
+        },
+        position: "top",
+      })
+      
       setError(false);
       setErrorMessage("");
-      window.location.href = "./login";
     })
     setEmail("")
     setPassword("")

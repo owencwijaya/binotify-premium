@@ -1,25 +1,16 @@
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    IconButton,
-    useDisclosure,
-    Button,
-  } from "@chakra-ui/react";
+  Button, IconButton, Modal, ModalBody,
+  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, useToast
+} from "@chakra-ui/react";
   
-  import { FaRegTrashAlt } from "react-icons/fa"
   import axios from "axios";
-import { MdClose } from "react-icons/md";
 import { BsCheck2Circle } from "react-icons/bs";
+import { MdClose } from "react-icons/md";
   
   
   const SubscriptionModal = (props: any) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-  
+    const toast = useToast()
   
     const updateSubs = () => {
       axios.put(
@@ -37,11 +28,17 @@ import { BsCheck2Circle } from "react-icons/bs";
               },
           }
       ).then((response) => {
-        alert(response.data.message)
-          if(response.status !== 200){
-              alert(response.data.message)
-          }
-          window.location.href = '/subscription'
+        toast({
+          title: response.status === 200 ? "Subscription updated." : "Error",
+          description: response.data.message,
+          status: response.status === 200 ? "success" : "error",
+          duration: 2000,
+          isClosable: true,
+          onCloseComplete() {
+            window.location.href = "/subscription";
+          },
+          position: "top",
+        })
       })
     }
   

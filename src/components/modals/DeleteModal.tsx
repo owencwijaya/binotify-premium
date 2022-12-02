@@ -1,22 +1,15 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  IconButton,
-  useDisclosure,
-  Button,
+  Button, IconButton, Modal, ModalBody,
+  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, useToast
 } from "@chakra-ui/react";
 
-import { FaRegTrashAlt } from "react-icons/fa"
 import axios from "axios";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 
 const DeleteModal = (props: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast()
 
 
   const deleteSong = () => {
@@ -30,10 +23,17 @@ const DeleteModal = (props: any) => {
             },
         }
     ).then((response) => {
-        if(response.status !== 200){
-            alert(response.data.message)
-        }
-        window.location.href = '/song'
+        toast({
+          title: response.status === 200 ? "Song deleted." : "Error",
+          description: response.data.message,
+          status: response.status === 200 ? "success" : "error",
+          duration: 2000,
+          isClosable: true,
+          onCloseComplete() {
+            window.location.href = "/song";
+          },
+          position: "top",
+        })
     })
   }
 
