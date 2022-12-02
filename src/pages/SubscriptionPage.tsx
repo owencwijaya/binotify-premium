@@ -7,6 +7,11 @@ import Identity from "../components/Identity"
 import SubsRow from "../components/rows/SubsRow"
 import { Subscription } from "../interface/Subscription"
 
+interface Penyanyi {
+  _id: string,
+  name: string,
+}
+
 const SubscriptionPage = () => {
   const url = 'http://localhost:3000'
   const limit = 5
@@ -37,7 +42,26 @@ const SubscriptionPage = () => {
         })
       }
 
-      setSubs(subscriptions);
+      axios.get(`${url}/user`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${sessionStorage.getItem("auth_token")}`
+        }
+      }).then((response)=>{
+        console.log(response.data.data)
+
+        if (response.data.data.length > 0) {
+          response.data.data.forEach((penyanyi: Penyanyi) => {
+            subscriptions.forEach((sub: Subscription) => {
+              if (sub.creator_id === penyanyi._id) {
+                sub.creator_id = penyanyi.name
+              }
+            })
+          })
+        }
+        setSubs(subscriptions);
+      })
+      
       setPage(page);
     })
   }
@@ -67,7 +91,7 @@ const SubscriptionPage = () => {
                   <Tr>
                     <Th width="1%" fontSize="md" textAlign="center">#</Th>
                     <Th width="25%" fontSize="md" textAlign="center">User ID</Th>
-                    <Th width="45%" fontSize="md" textAlign="center">Artist ID</Th>
+                    <Th width="45%" fontSize="md" textAlign="center">Artist</Th>
                     <Th></Th>
                   </Tr>
                 </Thead>
